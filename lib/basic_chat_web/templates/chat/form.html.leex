@@ -1,11 +1,11 @@
-	<%= form_for :msg, "#", [phx_submit: :send_msg, autocomplete: :off], fn f -> %>
-	  <%= label f, :username %>
-  	<%= text_input f, :username %>
+<%= f = form_for :msg, "#", [phx_submit: :send_msg, autocomplete: :off] %>
+  <%= label f, :username %>
+  <%= text_input f, :username %>
 
-		<%= label f, :content %>
-  	<%= text_input f, :content %>
-
-  	<div>
-			<%= submit "Send", phx_disable_with: "Loading..." %>
-  	</div>
-	<% end %>
+  <%= label f, :content %>
+  <%= text_input f, :content %>
+  
+  <div>
+    <%= submit "Send", phx_disable_with: "Loading..." %>
+  </div>
+</form>

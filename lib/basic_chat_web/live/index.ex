@@ -2,7 +2,10 @@ defmodule BasicChatWeb.Live.Index do
   use Phoenix.LiveView
 
   alias BasicChat.Chat
+  alias BasicChat.Chat.Message
   alias BasicChatWeb.ChatView
+
+  require Logger
 
   def mount(_session, socket) do
     {:ok, fetch(socket)}
@@ -12,8 +15,17 @@ defmodule BasicChatWeb.Live.Index do
     ChatView.render("index.html", assigns)
   end
 
-  defp fetch(socket, user_name \\ nil) do
+  def handle_event("send_msg", %{"msg" => params}, socket) do
+    params
+    |> Enum.into(%{"datetime" => DateTime.utc_now()})
+    |> Chat.create_message()
+
+    {:noreply, fetch(socket)}
+  end
+
+  defp fetch(socket) do
+    changeset = Chat.change_message(%Message{})
     messages = Chat.list_messages()
-    assign(socket, user_name: user_name, messages: messages)
+    assign(socket, messages: messages, changeset: changeset)
   end
 end

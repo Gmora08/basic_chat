@@ -2,6 +2,7 @@ defmodule BasicChatWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :basic_chat
 
   socket "/live", Phoenix.LiveView.Socket
+
   socket "/socket", BasicChatWeb.UserSocket,
     websocket: true,
     longpoll: false
