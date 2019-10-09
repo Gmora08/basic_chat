@@ -14,6 +14,6 @@ defmodule BasicChatWeb.Live.Index do
 
   defp fetch(socket, user_name \\ nil) do
     messages = Chat.list_messages()
-    assign(socket, %{user_name: user_name, messages: messages})
+    assign(socket, user_name: user_name, messages: messages)
   end
 end
