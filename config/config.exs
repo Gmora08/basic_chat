@@ -15,7 +15,10 @@ config :basic_chat, BasicChatWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "fRb/8ZZOb0RVv4TAIX6zA3IDPWIz5ZbXQVPFGeW9JMR+iJKV3Imda0c62aTICeub",
   render_errors: [view: BasicChatWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: BasicChat.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: BasicChat.PubSub, adapter: Phoenix.PubSub.PG2],
+  live_view: [
+     signing_salt: "CKwYy4BmZE+1HxFoXo4nH2rWNtFZUuD/"
+   ]
 
 # Configures Elixir's Logger
 config :logger, :console,
