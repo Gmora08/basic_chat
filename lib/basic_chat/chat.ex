@@ -8,6 +8,8 @@ defmodule BasicChat.Chat do
 
   alias BasicChat.Chat.Message
 
+  @topic inspect(__MODULE__)
+
   @doc """
   Returns the list of messages.
 
@@ -53,6 +55,7 @@ defmodule BasicChat.Chat do
     %Message{}
     |> Message.changeset(attrs)
     |> Repo.insert()
+    |> notify_subs([:message, :inserted])
   end
 
   @doc """
@@ -87,6 +90,7 @@ defmodule BasicChat.Chat do
   """
   def delete_message(%Message{} = message) do
     Repo.delete(message)
+    |> notify_subs([:message, :deleted])
   end
 
   @doc """
@@ -100,5 +104,18 @@ defmodule BasicChat.Chat do
   """
   def change_message(%Message{} = message) do
     Message.changeset(message, %{})
+  end
+
+  def subscribe do
+    Phoenix.PubSub.subscribe(BasicChat.PubSub, @topic)
+  end
+
+  defp notify_subs({:ok, result}, event) do
+    Phoenix.PubSub.broadcast(BasicChat.PubSub, @topic, {__MODULE__, event, result})
+    {:ok, result}
+  end
+
+  defp notify_subs({:error, reason}, _event) do
+    {:error, reason}
   end
 end

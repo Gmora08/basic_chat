@@ -8,6 +8,7 @@ defmodule BasicChatWeb.Live.Index do
   require Logger
 
   def mount(_session, socket) do
+    Chat.subscribe()
     {:ok, fetch(socket)}
   end
 
@@ -20,6 +21,10 @@ defmodule BasicChatWeb.Live.Index do
     |> Enum.into(%{"datetime" => DateTime.utc_now()})
     |> Chat.create_message()
 
+    {:noreply, fetch(socket)}
+  end
+
+  def handle_info({Chat, [:message, _event_type], _message}, socket) do
     {:noreply, fetch(socket)}
   end
 
